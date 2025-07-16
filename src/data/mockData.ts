@@ -140,7 +140,7 @@ export const mockAdmin: User = {
   email: 'example@admin.com',
   password: 'admin123', // NOTE: For demonstration purposes only. Do not do this in production.
   role: 'admin',
-  avatar: 'https://res.cloudinary.com/dbl4fjxuf/image/upload/v1752585533/Untitled_design_1_mf4lzp.png',
+  avatar: 'https://res.cloudinary.com/dbl4fjxuf/image/upload/v1752575431/Untitled_design_hajeth.png',
 };
 
 // Mock orders
