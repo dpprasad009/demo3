@@ -133,12 +133,12 @@ const ProductDetail: React.FC = () => {
             <div className="mb-6">
               <div className="flex items-center space-x-4 mb-4">
                 <span className="text-3xl font-bold text-primary-600">
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </span>
                 {product.originalPrice && (
                   <>
                     <span className="text-xl text-gray-500 line-through">
-                      ${product.originalPrice.toFixed(2)}
+                      ₹{product.originalPrice.toFixed(2)}
                     </span>
                     <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
                       {discountPercentage}% OFF

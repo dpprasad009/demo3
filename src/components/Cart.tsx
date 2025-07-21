@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { useNavigate } from 'react-router-dom';
 
 const Cart: React.FC = () => {
   const { 
@@ -11,16 +12,19 @@ const Cart: React.FC = () => {
     updateQuantity, 
     removeFromCart, 
     getCartTotal,
-    clearCart 
+    isAuthenticated
   } = useStore();
+  const navigate = useNavigate();
 
   const total = getCartTotal();
 
   const handleCheckout = () => {
-    // In a real app, this would redirect to checkout
-    alert('Checkout functionality would be implemented here');
-    clearCart();
     setIsCartOpen(false);
+    if (isAuthenticated) {
+      navigate('/checkout');
+    } else {
+      navigate('/login', { state: { from: { pathname: '/checkout' } } });
+    }
   };
 
   return (
@@ -81,7 +85,7 @@ const Cart: React.FC = () => {
                         <div className="flex-1">
                           <h3 className="font-medium text-sm">{item.product.name}</h3>
                           <p className="text-primary-600 font-semibold">
-                            ${item.product.price.toFixed(2)}
+                            ₹{item.product.price.toFixed(2)}
                           </p>
                           <div className="flex items-center space-x-2 mt-2">
                             <button
@@ -117,7 +121,7 @@ const Cart: React.FC = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold">Total:</span>
                     <span className="text-lg font-bold text-primary-600">
-                      ${total.toFixed(2)}
+                      ₹{total.toFixed(2)}
                     </span>
                   </div>
                   <button

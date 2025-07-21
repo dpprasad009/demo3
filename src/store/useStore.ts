@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product, CartItem, User, Order } from '../types';
+import { Product, CartItem, User, Order, ShippingAddress } from '../types';
 import { mockAdmin } from '../data/mockData';
 
 interface StoreState {
@@ -32,7 +32,7 @@ interface StoreState {
   // Orders state
   orders: Order[];
   setOrders: (orders: Order[]) => void;
-  addOrder: (order: Order) => void;
+  placeOrder: () => Promise<Order | null>;
 
   // UI state
   isCartOpen: boolean;
@@ -47,6 +47,12 @@ interface StoreState {
   setPriceRange: (range: [number, number]) => void;
   sortBy: 'name' | 'price' | 'rating' | 'newest';
   setSortBy: (sort: 'name' | 'price' | 'rating' | 'newest') => void;
+
+  // Checkout state
+  checkoutStep: number;
+  setCheckoutStep: (step: number) => void;
+  shippingAddress: ShippingAddress | null;
+  setShippingAddress: (address: ShippingAddress) => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -91,7 +97,7 @@ export const useStore = create<StoreState>()(
           )
         });
       },
-      clearCart: () => set({ cart: [] }),
+      clearCart: () => set({ cart: [], shippingAddress: null, checkoutStep: 1 }),
       getCartTotal: () => {
         return get().cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
       },
@@ -130,7 +136,7 @@ export const useStore = create<StoreState>()(
         return { success: true, message: 'Signup successful! Please log in.' };
       },
       logout: () => {
-        set({ user: null, isAuthenticated: false });
+        set({ user: null, isAuthenticated: false, shippingAddress: null, checkoutStep: 1 });
       },
 
 
@@ -158,10 +164,29 @@ export const useStore = create<StoreState>()(
       // Orders state
       orders: [],
       setOrders: (orders) => set({ orders }),
-      addOrder: (order) => {
+      placeOrder: async () => {
+        const { cart, user, shippingAddress, getCartTotal } = get();
+        if (!user || !shippingAddress || cart.length === 0) {
+          return null;
+        }
+
+        const newOrder: Order = {
+          id: `ORD-${Date.now()}`,
+          userId: user.id,
+          items: cart,
+          total: getCartTotal() + (getCartTotal() > 7999 ? 0 : 500), // Add shipping cost
+          status: 'processing',
+          createdAt: new Date(),
+          shippingAddress: shippingAddress,
+        };
+
         set({
-          orders: [...get().orders, order]
+          orders: [...get().orders, newOrder]
         });
+        
+        get().clearCart();
+
+        return newOrder;
       },
 
       // UI state
@@ -177,6 +202,12 @@ export const useStore = create<StoreState>()(
       setPriceRange: (range) => set({ priceRange: range }),
       sortBy: 'name',
       setSortBy: (sort) => set({ sortBy: sort }),
+
+      // Checkout State
+      checkoutStep: 1,
+      setCheckoutStep: (step) => set({ checkoutStep: step }),
+      shippingAddress: null,
+      setShippingAddress: (address) => set({ shippingAddress: address }),
     }),
     {
       name: 'innomakers-store',
@@ -193,7 +224,6 @@ export const useStore = create<StoreState>()(
         if (merged.users) {
           const users = merged.users as User[];
           const adminInState = users.find(u => u.id === '1');
-          // Update if admin doesn't exist, email is wrong, or password is not set
           if (!adminInState || adminInState.email !== mockAdmin.email || !adminInState.password) {
             const otherUsers = users.filter(u => u.id !== '1');
             merged.users = [...otherUsers, mockAdmin];

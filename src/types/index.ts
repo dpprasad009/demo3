@@ -35,6 +35,15 @@ export interface User {
   avatar?: string;
 }
 
+export interface ShippingAddress {
+  name: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
 export interface Order {
   id: string;
   userId: string;
@@ -42,13 +51,7 @@ export interface Order {
   total: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   createdAt: Date;
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
+  shippingAddress: ShippingAddress;
 }
 
 export interface AdminStats {

@@ -42,7 +42,7 @@ const Home: React.FC = () => {
     {
       icon: Truck,
       title: 'Free Shipping',
-      description: 'Free shipping on orders over $99 with fast delivery'
+      description: 'Free shipping on orders over ₹7999 with fast delivery'
     },
     {
       icon: Clock,

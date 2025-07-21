@@ -93,7 +93,7 @@ const Admin: React.FC = () => {
               {[
                 { title: 'Total Products', value: stats.totalProducts, icon: Package, color: 'bg-blue-500' },
                 { title: 'Total Orders', value: stats.totalOrders, icon: ShoppingCart, color: 'bg-green-500' },
-                { title: 'Total Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, icon: DollarSign, color: 'bg-purple-500' },
+                { title: 'Total Revenue', value: `₹${stats.totalRevenue.toFixed(2)}`, icon: DollarSign, color: 'bg-purple-500' },
                 { title: 'Total Customers', value: stats.totalCustomers, icon: Users, color: 'bg-orange-500' },
               ].map((stat, index) => (
                 <motion.div
@@ -135,7 +135,7 @@ const Admin: React.FC = () => {
                       <tr key={order.id} className="border-b border-gray-100">
                         <td className="py-3 px-4">{order.id.slice(0, 8)}...</td>
                         <td className="py-3 px-4">{order.userId.slice(0, 8)}...</td>
-                        <td className="py-3 px-4">${order.total.toFixed(2)}</td>
+                        <td className="py-3 px-4">₹{order.total.toFixed(2)}</td>
                         <td className="py-3 px-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             order.status === 'delivered' ? 'bg-green-100 text-green-800' :
@@ -203,7 +203,7 @@ const Admin: React.FC = () => {
                         <td className="py-3 px-4 capitalize">
                           {product.category.replace('-', ' ')}
                         </td>
-                        <td className="py-3 px-4">${product.price.toFixed(2)}</td>
+                        <td className="py-3 px-4">₹{product.price.toFixed(2)}</td>
                         <td className="py-3 px-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -262,7 +262,7 @@ const Admin: React.FC = () => {
                       <tr key={order.id} className="border-b border-gray-100">
                         <td className="py-3 px-4">{order.id.slice(0, 8)}...</td>
                         <td className="py-3 px-4">{order.userId.slice(0, 8)}...</td>
-                        <td className="py-3 px-4">${order.total.toFixed(2)}</td>
+                        <td className="py-3 px-4">₹{order.total.toFixed(2)}</td>
                         <td className="py-3 px-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             order.status === 'delivered' ? 'bg-green-100 text-green-800' :

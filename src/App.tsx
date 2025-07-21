@@ -14,6 +14,8 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Checkout from './pages/Checkout';
+import OrderConfirmation from './pages/OrderConfirmation';
 
 function App() {
   const { setProducts, setOrders, products } = useStore();
@@ -49,6 +51,22 @@ function App() {
               element={
                 <ProtectedRoute adminOnly={true}>
                   <Admin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order-confirmation/:orderId"
+              element={
+                <ProtectedRoute>
+                  <OrderConfirmation />
                 </ProtectedRoute>
               }
             />
